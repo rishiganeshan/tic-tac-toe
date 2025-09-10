@@ -84,11 +84,11 @@ function GameController(
     const players = [
         {
             name: playerOneName,
-            token: 1
+            token: "X"
         },
         {
             name: playerTwoName,
-            token: 2
+            token: "O"
         }
     ];
 
@@ -124,11 +124,11 @@ function GameController(
 
             
         for (let i=0; i < 3; i++) {
-            console.log(board.getBoard()[i][0].getValue())
-            console.log(board.getBoard()[i][1].getValue())
-            console.log(board.getBoard()[i][2].getValue())
+            // console.log(board.getBoard()[i][0].getValue())
+            // console.log(board.getBoard()[i][1].getValue())
+            // console.log(board.getBoard()[i][2].getValue())
 
-            console.log(getActivePlayer().token)
+            // console.log(getActivePlayer().token)
             
             if (board.getBoard()[i][0].getValue() ===
                 board.getBoard()[i][1].getValue() &&
@@ -177,6 +177,23 @@ function GameController(
             return
 
         }
+        
+        outerLoop:
+            for (let i=0; i < 3; i++) {
+
+                for (let j = 0; j < 3; j++) {
+                    if (board.getBoard()[i][j].getValue() === 0) {
+                        console.log("ok")
+                        break outerLoop;
+                    }
+
+                }
+                if (i===2) {
+                    console.log("It's a tie!")
+                    return;
+                }
+            }
+
 
 
         
@@ -188,7 +205,7 @@ function GameController(
         printNewRound();
     };
 
-    const simulateGame = () => {
+    const simulateGamePlayer1Win = () => {
         playRound(0, 0)
         playRound(1, 1)
         playRound(0, 1)
@@ -196,6 +213,19 @@ function GameController(
         playRound(0, 2)
 
     }
+
+    // const simulateGameTie = () => {
+    //     playRound(0, 0)
+    //     playRound(1, 1)
+    //     playRound(2, 2)
+    //     playRound(0, 2)
+    //     playRound(2, 0)
+    //     playRound(0, 1)
+    //     playRound(1, 2)
+    //     playRound(1, 0)
+    //     playRound(2, 1)
+
+    // }
 
     // Initial play game message
     printNewRound();
@@ -207,7 +237,8 @@ function GameController(
     return {
         playRound,
         getActivePlayer,
-        simulateGame
+        simulateGamePlayer1Win,
+        // simulateGameTie
     };
 }
 

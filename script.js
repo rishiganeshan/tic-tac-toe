@@ -76,8 +76,8 @@ function Cell() {
 ** anybody has won the game
 */
 function GameController(
-    playerOneName = "Player One",
-    playerTwoName = "Player Two"
+    playerOneName,
+    playerTwoName
 ) {
     const board = Gameboard();
 
@@ -147,7 +147,7 @@ function GameController(
 
                     
                 outcome = "Winner is player " + 
-                    getActivePlayer().token
+                    getActivePlayer().name
                     gameFinished = true;
                     return;
             }
@@ -159,7 +159,7 @@ function GameController(
                 board.getBoard()[0][i].getValue() ===
                 getActivePlayer().token) {
                 outcome = "Winner is player " +
-                    getActivePlayer().token
+                    getActivePlayer().name
                 gameFinished = true;
                 return;
 
@@ -173,7 +173,7 @@ function GameController(
             board.getBoard()[0][0].getValue() ===
             getActivePlayer().token) {
             outcome = "Winner is player " +
-                getActivePlayer().token
+                getActivePlayer().name
             gameFinished = true;
             return;
 
@@ -185,7 +185,7 @@ function GameController(
             board.getBoard()[2][0].getValue() ===
             getActivePlayer().token) {
             outcome = "Winner is player " +
-                getActivePlayer().token
+                getActivePlayer().name
             gameFinished = true;
             return;
 
@@ -258,12 +258,61 @@ function GameController(
 
 function ScreenController() {
 
-    let game = GameController();
+    // let game = GameController();
+    let game;
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const rowDivs = document.querySelectorAll('.row');
     const resultDiv = document.querySelector('.result');
     const resetButton = document.querySelector('button.reset')
+    let name1;
+    let name2;
+
+    const favDialog = document.getElementById("favDialog");
+    const confirmBtn = favDialog.querySelector("form > button");
+    const form = document.querySelector("form");
+    const body = document.querySelector("body")
+
+    favDialog.showModal();
+
+    form.addEventListener("submit", (e) => {
+        // ...or iterate through the name-value pairs
+        e.preventDefault();
+
+        var formData = new FormData(form);
+
+        name1 = formData.get("name1")
+        name2 = formData.get("name2")
+      
+        game = GameController(name1,name2)
+        updateScreen();
+
+        favDialog.close()
+
+
+
+
+
+    });
+
+    // function getPlayerNames() {
+   
+    //     while (name1 == null) {
+    //         name1 = prompt("Please enter your name Player 1", "Player 1");
+
+
+    //     }
+    //     while (name2 === null) {
+    //         name2 = prompt("Please enter your name Player 2", "Player 2");
+    //     }
+
+
+    //     game = GameController(name1,name2)
+
+
+    // }
+    // getPlayerNames()
+    
     // console.log(rowDivs)
 
     const updateScreen = () => {
@@ -325,7 +374,7 @@ function ScreenController() {
     }
 
     function resetBoard() {
-        game = GameController()
+        game = GameController(name1,name2)
         boardDiv.addEventListener("click", clickHandlerBoard);
         resultDiv.textContent = ""
         updateScreen()
@@ -335,7 +384,6 @@ function ScreenController() {
     resetButton.addEventListener("click", resetBoard)
 
     // Initial render
-    updateScreen();
 
     // We don't need to return anything from this module because everything is encapsulated inside this screen controller.
 }

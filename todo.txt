@@ -1,0 +1,1 @@
+Refactor all the if's into one fn, then add outcome as one line after calling fn

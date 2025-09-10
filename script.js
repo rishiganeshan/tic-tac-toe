@@ -256,7 +256,7 @@ function GameController(
 
     
 
-function ScreenController() {
+const ScreenController = (function () {
 
     // let game = GameController();
     let game;
@@ -386,6 +386,6 @@ function ScreenController() {
     // Initial render
 
     // We don't need to return anything from this module because everything is encapsulated inside this screen controller.
-}
+})();
 
-ScreenController();
+// ScreenController();

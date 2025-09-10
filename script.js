@@ -227,18 +227,7 @@ function GameController(
 
     }
 
-    // const simulateGameTie = () => {
-    //     playRound(0, 0)
-    //     playRound(1, 1)
-    //     playRound(2, 2)
-    //     playRound(0, 2)
-    //     playRound(2, 0)
-    //     playRound(0, 1)
-    //     playRound(1, 2)
-    //     playRound(1, 0)
-    //     playRound(2, 1)
 
-    // }
 
     // Initial play game message
     printNewRound();
@@ -252,7 +241,8 @@ function GameController(
         getActivePlayer,
         simulateGamePlayer1Win,
         getBoard: board.getBoard,
-        getGameFinished
+        getGameFinished,
+        printNewRound
 
         // simulateGameTie
     };
@@ -265,10 +255,11 @@ function GameController(
 
 function ScreenController() {
 
-    const game = GameController();
+    let game = GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const rowDivs = document.querySelectorAll('.row');
+    const resetButton = document.querySelector('button.reset')
     // console.log(rowDivs)
 
     const updateScreen = () => {
@@ -280,7 +271,9 @@ function ScreenController() {
         }
 
         // get the newest version of the board and player turn
-        const board = game.getBoard();
+        let board = game.getBoard();
+
+        
         const activePlayer = game.getActivePlayer();
 
         // Display player's turn
@@ -297,8 +290,8 @@ function ScreenController() {
                 // This makes it easier to pass into our `playRound` function 
                 cellButton.dataset.column = colIndex
                 cellButton.dataset.row = rowIndex
-      
                 cellButton.textContent = cell.getValue();
+
                 rowDivs[rowIndex].appendChild(cellButton);
             })
         })
@@ -319,11 +312,18 @@ function ScreenController() {
         game.playRound(selectedRow,selectedColumn);
         updateScreen();
         if (game.getGameFinished()) {
-            console.log("nice")
             makeButtonsUnresponsive()
         }
     }
+
+    function resetBoard() {
+        game = GameController()
+        boardDiv.addEventListener("click", clickHandlerBoard);
+        updateScreen()
+
+    }
     boardDiv.addEventListener("click", clickHandlerBoard);
+    resetButton.addEventListener("click", resetBoard)
 
     // Initial render
     updateScreen();

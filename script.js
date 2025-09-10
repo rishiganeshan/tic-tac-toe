@@ -81,6 +81,8 @@ function GameController(
 ) {
     const board = Gameboard();
 
+    let outcome = "";
+
     const players = [
         {
             name: playerOneName,
@@ -100,6 +102,8 @@ function GameController(
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
     const getActivePlayer = () => activePlayer;
+
+    const getOutcomeText = () => outcome;
 
     const getGameFinished = () => gameFinished;
 
@@ -140,9 +144,10 @@ function GameController(
                 board.getBoard()[i][2].getValue() &&
                 board.getBoard()[i][0].getValue() ===
                 getActivePlayer().token) {
+
                     
-                console.log("Winner is player " + 
-                    getActivePlayer().token)
+                outcome = "Winner is player " + 
+                    getActivePlayer().token
                     gameFinished = true;
                     return;
             }
@@ -153,10 +158,9 @@ function GameController(
                 board.getBoard()[2][i].getValue() &&
                 board.getBoard()[0][i].getValue() ===
                 getActivePlayer().token) {
-                console.log("Winner is player " +
-                    getActivePlayer().token)
+                outcome = "Winner is player " +
+                    getActivePlayer().token
                 gameFinished = true;
-
                 return;
 
             }
@@ -168,11 +172,10 @@ function GameController(
             board.getBoard()[2][2].getValue() &&
             board.getBoard()[0][0].getValue() ===
             getActivePlayer().token) {
-            console.log("Winner is player " +
-                getActivePlayer().token)
+            outcome = "Winner is player " +
+                getActivePlayer().token
             gameFinished = true;
-
-            return
+            return;
 
         }
         if (board.getBoard()[2][0].getValue() ===
@@ -181,11 +184,10 @@ function GameController(
             board.getBoard()[0][2].getValue() &&
             board.getBoard()[2][0].getValue() ===
             getActivePlayer().token) {
-            console.log("Winner is player " +
-                getActivePlayer().token)
+            outcome = "Winner is player " +
+                getActivePlayer().token
             gameFinished = true;
-
-            return
+            return;
 
         }
         
@@ -200,7 +202,7 @@ function GameController(
 
                 }
                 if (i===2) {
-                    console.log("It's a tie!")
+                    outcome = "It's a tie!"
                     gameFinished = true;
 
                     return;
@@ -242,7 +244,8 @@ function GameController(
         simulateGamePlayer1Win,
         getBoard: board.getBoard,
         getGameFinished,
-        printNewRound
+        printNewRound,
+        getOutcomeText
 
         // simulateGameTie
     };
@@ -259,6 +262,7 @@ function ScreenController() {
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const rowDivs = document.querySelectorAll('.row');
+    const resultDiv = document.querySelector('.result');
     const resetButton = document.querySelector('button.reset')
     // console.log(rowDivs)
 
@@ -313,12 +317,17 @@ function ScreenController() {
         updateScreen();
         if (game.getGameFinished()) {
             makeButtonsUnresponsive()
+            playerTurnDiv.textContent = ""
+            resultDiv.textContent = game.getOutcomeText()
+            
         }
+
     }
 
     function resetBoard() {
         game = GameController()
         boardDiv.addEventListener("click", clickHandlerBoard);
+        resultDiv.textContent = ""
         updateScreen()
 
     }

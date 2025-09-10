@@ -253,10 +253,16 @@ function ScreenController() {
     const game = GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
+    const rowDivs = document.querySelectorAll('.row');
+    // console.log(rowDivs)
 
     const updateScreen = () => {
         // clear the board
-        boardDiv.textContent = "";
+        
+        // boardDiv.textContent = "";
+        for (let i = 0; i < 3; i++) {
+            rowDivs[i].textContent = "";
+        }
 
         // get the newest version of the board and player turn
         const board = game.getBoard();
@@ -267,6 +273,7 @@ function ScreenController() {
 
         // Render board squares
         board.forEach((row,rowIndex) => {
+            
             row.forEach((cell, colIndex) => {
                 // Anything clickable should be a button!!
                 const cellButton = document.createElement("button");
@@ -279,7 +286,7 @@ function ScreenController() {
                 console.log(cellButton.dataset.row)
                 console.log("ok")
                 cellButton.textContent = cell.getValue();
-                boardDiv.appendChild(cellButton);
+                rowDivs[rowIndex].appendChild(cellButton);
             })
         })
     }

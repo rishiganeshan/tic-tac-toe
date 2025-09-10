@@ -92,12 +92,16 @@ function GameController(
         }
     ];
 
+    let gameFinished = false;
+
     let activePlayer = players[0];
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
     const getActivePlayer = () => activePlayer;
+
+    const getGameFinished = () => gameFinished;
 
     const printNewRound = () => {
         board.printBoard();
@@ -139,6 +143,7 @@ function GameController(
                     
                 console.log("Winner is player " + 
                     getActivePlayer().token)
+                    gameFinished = true;
                     return;
             }
 
@@ -150,6 +155,8 @@ function GameController(
                 getActivePlayer().token) {
                 console.log("Winner is player " +
                     getActivePlayer().token)
+                gameFinished = true;
+
                 return;
 
             }
@@ -163,6 +170,8 @@ function GameController(
             getActivePlayer().token) {
             console.log("Winner is player " +
                 getActivePlayer().token)
+            gameFinished = true;
+
             return
 
         }
@@ -174,6 +183,8 @@ function GameController(
             getActivePlayer().token) {
             console.log("Winner is player " +
                 getActivePlayer().token)
+            gameFinished = true;
+
             return
 
         }
@@ -190,6 +201,8 @@ function GameController(
                 }
                 if (i===2) {
                     console.log("It's a tie!")
+                    gameFinished = true;
+
                     return;
                 }
             }
@@ -238,7 +251,9 @@ function GameController(
         playRound,
         getActivePlayer,
         simulateGamePlayer1Win,
-        getBoard: board.getBoard
+        getBoard: board.getBoard,
+        getGameFinished
+
         // simulateGameTie
     };
 }
@@ -282,13 +297,16 @@ function ScreenController() {
                 // This makes it easier to pass into our `playRound` function 
                 cellButton.dataset.column = colIndex
                 cellButton.dataset.row = rowIndex
-                console.log(cellButton.dataset.column)
-                console.log(cellButton.dataset.row)
-                console.log("ok")
+      
                 cellButton.textContent = cell.getValue();
                 rowDivs[rowIndex].appendChild(cellButton);
             })
         })
+    }
+
+    function makeButtonsUnresponsive() {
+        boardDiv.removeEventListener("click", clickHandlerBoard)
+
     }
 
     // Add event listener for the board
@@ -300,6 +318,10 @@ function ScreenController() {
 
         game.playRound(selectedRow,selectedColumn);
         updateScreen();
+        if (game.getGameFinished()) {
+            console.log("nice")
+            makeButtonsUnresponsive()
+        }
     }
     boardDiv.addEventListener("click", clickHandlerBoard);
 

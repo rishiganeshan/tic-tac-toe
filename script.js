@@ -104,6 +104,7 @@ function GameController(
         console.log(`${getActivePlayer().name}'s turn.`);
     };
 
+
     const playRound = (row, column) => {
         // Drop a token for the current player
         console.log(
@@ -118,38 +119,47 @@ function GameController(
 
         /*  This is where we would check for a winner and handle that logic,
             such as a win message. */
-        console.log(board.getBoard()[0][0].getValue())
-        console.log(board.getBoard()[0][1].getValue())
-        console.log(board.getBoard()[0][2].getValue())
-
-        console.log(getActivePlayer().token)
+        
         
 
             
         for (let i=0; i < 3; i++) {
+            console.log(board.getBoard()[i][0].getValue())
+            console.log(board.getBoard()[i][1].getValue())
+            console.log(board.getBoard()[i][2].getValue())
+
+            console.log(getActivePlayer().token)
+            
             if (board.getBoard()[i][0].getValue() ===
-                board.getBoard()[i][1].getValue() ===
-                board.getBoard()[i][2].getValue() ===
+                board.getBoard()[i][1].getValue() &&
+                board.getBoard()[i][0].getValue() ===
+                board.getBoard()[i][2].getValue() &&
+                board.getBoard()[i][0].getValue() ===
                 getActivePlayer().token) {
+                    
                 console.log("Winner is player " + 
                     getActivePlayer().token)
                     return;
             }
 
             if (board.getBoard()[0][i].getValue() ===
-                board.getBoard()[1][i].getValue() ===
-                board.getBoard()[2][i].getValue() ===
+                board.getBoard()[1][i].getValue() &&
+                board.getBoard()[0][i].getValue() ===
+                board.getBoard()[2][i].getValue() &&
+                board.getBoard()[0][i].getValue() ===
                 getActivePlayer().token) {
                 console.log("Winner is player " +
                     getActivePlayer().token)
-                // return
+                return;
 
             }
 
         }
         if (board.getBoard()[0][0].getValue() ===
-            board.getBoard()[1][1].getValue() ===
-            board.getBoard()[2][2].getValue() ===
+            board.getBoard()[1][1].getValue() &&
+            board.getBoard()[0][0].getValue() ===
+            board.getBoard()[2][2].getValue() &&
+            board.getBoard()[0][0].getValue() ===
             getActivePlayer().token) {
             console.log("Winner is player " +
                 getActivePlayer().token)
@@ -157,8 +167,10 @@ function GameController(
 
         }
         if (board.getBoard()[2][0].getValue() ===
-            board.getBoard()[1][1].getValue() ===
-            board.getBoard()[0][2].getValue() ===
+            board.getBoard()[1][1].getValue() &&
+            board.getBoard()[2][0].getValue() ===
+            board.getBoard()[0][2].getValue() &&
+            board.getBoard()[2][0].getValue() ===
             getActivePlayer().token) {
             console.log("Winner is player " +
                 getActivePlayer().token)
@@ -176,20 +188,26 @@ function GameController(
         printNewRound();
     };
 
+    const simulateGame = () => {
+        playRound(0, 0)
+        playRound(1, 1)
+        playRound(0, 1)
+        playRound(2, 2)
+        playRound(0, 2)
+
+    }
+
     // Initial play game message
     printNewRound();
-    playRound(0,0)
-    playRound(1, 1)
-    playRound(0, 1)
-    playRound(2, 2)
-    playRound(0, 2)
+   
 
 
     // For the console version, we will only use playRound, but we will need
     // getActivePlayer for the UI version, so I'm revealing it now
     return {
         playRound,
-        getActivePlayer
+        getActivePlayer,
+        simulateGame
     };
 }
 
